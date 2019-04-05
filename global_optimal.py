@@ -27,7 +27,7 @@ class Graph_global:
 				# avoid adding loop (edge from one vertex to itself)
 				if(i != j):
 					# avoid adding edge not existing
-					if mat[i, j]:
+					if(~np.isnan(mat[i, j])):
 						self.__addEdge(i, j, mat[i, j])
 
 	"""
