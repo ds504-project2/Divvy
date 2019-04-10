@@ -5,8 +5,8 @@
 ### 2) use distance to weight edge
 
 ## 2 Locally shortest path
-**(Input: starting station s, destination station d)
-**(Output: path, distance and time for each edge in the path)
+*Input: starting station s, destination station d
+*Output: path, distance and time for each edge in the path
 ### Algorithm: 
 #### 1. Create a graph from the time matrix and distance matrix
 #### 2. Initialization: set next station as (s)
