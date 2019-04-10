@@ -14,6 +14,6 @@
 - 1). Find all the stations which can be reached in 30 minutes from the station (s), and put them in a set (P) (excludes s)
 - 2). Find the station (m) which is closest to the destination station (d) from the set (P)
 -  3). Set s = m
-- Repeat 1) to 3) until s == d, which means the next station (s) is the destination station (d)
+#### Repeat 1) to 3) until s == d, which means the next station (s) is the destination station (d)
 
 
