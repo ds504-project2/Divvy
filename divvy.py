@@ -10,7 +10,7 @@ Arguments:
 	mat_time: A matrix, [i, j] is the travel time from vertex i to vertex j
 """
 class Graph_Divvy:
-	def __init__(self, num_vertices, mat_time, mat_dist):
+	def __init__(self, num_vertices, mat_dist, mat_time):
 		self.V = num_vertices # number of vertices
 		self.graph = []
 		self.mat_dist = mat_dist
@@ -31,13 +31,38 @@ class Graph_Divvy:
 				# avoid adding loop (edge from one vertex to itself)
 				if(i != j):
 					# avoid adding edge not existing
-					if(~np.isnan(mat_dist[i, j]) and ~np.isnan(mat_time[i, j])):
-						self.__addEdge(i, j, mat_dist[i, j], mat_time[i, j])
+					if(~np.isnan(self.mat_dist[i, j]) and ~np.isnan(self.mat_time[i, j])):
+						self.__addEdge(i, j, self.mat_dist[i, j], self.mat_time[i, j])
 
-	# main function that finds the shortest path from src to all other vertices
-	# return distance and parent list
+	# main function that finds the shortest path from src to end
+	# return path, distance list and time list
 	def Divvy_GJLS(self, src, end, time_span=30):
-		pass
+		path_list = [src]
+		dist_list = []
+		time_list = []
+		next_v = src
+		while(next_v != end):
+			next_v, next_dist, next_time = self.next_vertex(next_v, end, time_span=30)
+			# print(next_v)
+
+			# try to avoid going back and force or going in a circle
+			# Is there a better way to handle this problem?
+			# Following is just a naive method to avoid this situation
+			if(next_v in path_list):
+				circle_v_loc_idx = path_list.index(next_v)
+				path_list = path_list[:circle_v_loc_idx+1]
+				dist_list = dist_list[:circle_v_loc_idx]
+				time_list = time_list[:circle_v_loc_idx]
+				path_list.append(end)
+				dist_list.append(self.mat_dist[next_v, end])
+				time_list.append(self.mat_time[next_v, end])
+				break
+			
+			path_list.append(next_v)
+			dist_list.append(next_dist)
+			time_list.append(next_time)
+		return path_list, dist_list, time_list
+
 
 	def next_vertex(self, start, end, time_span=30):
 		in_30_list = []
@@ -50,7 +75,8 @@ class Graph_Divvy:
 
 		# first check if the end vertex can be reached in 30 minutes from start
 		if(current_time_vec[end] <= 30):
-			return start, end
+			# return start, end
+			return end, self.mat_dist[start, end], self.mat_time[start, end]
 
 		for v in range(len(current_time_vec)):
 			if(v != start and current_time_vec[v] <= time_span):
@@ -58,10 +84,13 @@ class Graph_Divvy:
 
 		# find the nearest station to the end
 		dist_vec = [current_dist_vec[x] for x in in_30_list]
-		# consider if more than 1 vertices are nearest to the end
-		other_v = []
+		# when all the other stations are not in 30-min circle, return the end station directly
+		if not dist_vec:
+			return end, self.mat_dist[start, end], self.mat_time[start, end]
 		min_dist = dist_vec[0]
 		next_v = in_30_list[0]
+		# consider if more than 1 vertices are nearest to the end
+		other_v = []
 		for i in range(1, len(dist_vec)):
 			if(dist_vec[i] == min_dist):
 				other_v.append(in_30_list[i])
@@ -71,13 +100,15 @@ class Graph_Divvy:
 				other_v = []
 			else:
 				continue
-		if not other_v:
-			return start, next_v
-		else:
+		# if not other_v:
+		# 	# return start, next_v
+		# 	return next_v
+		if other_v:
 			other_v.append(next_v)
 			other_time = [current_time_vec[x] for x in other_v]
 			next_v = other_v[other_time.index(max(other_time))]
-			return start, next_v
+			# return start, next_v
+		return next_v, self.mat_dist[start, next_v], self.mat_time[start, next_v]
 
 		# # if the start vertex is the nearest one to the end, go stright from start to the end
 		# if(current_dist_vec[start] <= min(dist_vec)):
@@ -104,3 +135,24 @@ class Graph_Divvy:
 		# 	return start,other_v[other_time.index(max(other_time))]
 		# else:
 		# 	return start, next_v
+
+if __name__ == "__main__":
+	np.random.seed(2)
+	d_m = np.random.normal(10, 3, size=(6, 6))
+	t_m = np.random.normal(35, 10, size=(6, 6))
+	g = Graph_Divvy(6, d_m, t_m)
+	# next_v, d, t = g.next_vertex(0, 3)
+	path_l, dist_l, time_l = g.Divvy_GJLS(0, 3, time_span=30)
+
+	print("\ndistance mat")
+	print(d_m)
+	print("\ntime mat")
+	print(t_m)
+	# print("\nnext step from 0 to 3 (distance and time)")
+	# print(next_v, d, t)
+	print("\npath from 0 to 3 is")
+	print(path_l)
+	print("distance list is")
+	print(dist_l)
+	print("time list is")
+	print(time_l)
