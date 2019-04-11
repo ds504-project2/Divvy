@@ -1,12 +1,20 @@
 # Divvy Bike Project
 
 ## 1 Globally shortest path (for evaluation of our method)
-### 1) use time to weight edge
-### 2) use distance to weight edge
+Use Bellman-Ford shortest path algorithm
+#### Input: 
+##### For distance based shortest path:
+*distance matrix, starting station (s), destination station (d)*
+#### For time based shortest path:
+*time matrix (in minute), starting station (s), destination station (d)
+#### Output: 
+*shortest path and the shortest distance (or time)
+
+
 
 ## 2 Locally shortest path
 #### Input: 
-*distance matrix, time distance (in minutes), starting station s, destination station d*
+*distance matrix, time matrix (in minute), starting station s, destination station d*
 #### Output: 
 *path, distance for each edge in the path, time for each edge in the path*
 ### Algorithm: 
