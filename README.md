@@ -5,7 +5,7 @@ Use Bellman-Ford shortest path algorithm
 #### Input: 
 ##### For distance based shortest path:
 *distance matrix, starting station, destination station*
-#### For time based shortest path:
+##### For time based shortest path:
 *time matrix, starting station, destination station*
 #### Output: 
 *shortest path and the shortest distance (or time)
