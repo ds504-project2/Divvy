@@ -4,9 +4,9 @@
 Use Bellman-Ford shortest path algorithm
 #### Input: 
 ##### For distance based shortest path:
-*distance matrix - numpy array, starting station - index, destination station - index *
+*distance matrix, starting station, destination station*
 #### For time based shortest path:
-*time matrix - numpy array, starting station - index, destination station - index*
+*time matrix, starting station, destination station*
 #### Output: 
 *shortest path and the shortest distance (or time)
 
@@ -14,7 +14,7 @@ Use Bellman-Ford shortest path algorithm
 
 ## 2 Locally shortest path
 #### Input: 
-*distance matrix - numpy array, time matrix - numpy array, starting station s - index, destination station d - index*
+*distance matrix, time matrix, starting station s, destination station d*
 #### Output: 
 *path, distance for each edge in the path, time for each edge in the path*
 ### Algorithm: 
