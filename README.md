@@ -4,7 +4,8 @@
 Use Bellman-Ford shortest path algorithm
 #### Input: 
 ##### For distance based shortest path:
-*distance matrix, starting station (s), destination station (d)*
+*distance matrix*
+*starting station (s), destination station (d)*
 #### For time based shortest path:
 *time matrix (in minute), starting station (s), destination station (d)
 #### Output: 
