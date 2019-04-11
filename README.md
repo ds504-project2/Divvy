@@ -8,7 +8,7 @@ Use Bellman-Ford shortest path algorithm
 ##### For time based shortest path:
 *time matrix, starting station, destination station*
 #### Output: 
-*shortest path and the shortest distance (or time)
+*shortest path and the shortest distance (or time)*
 
 
 
