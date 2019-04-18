@@ -9,10 +9,11 @@ Arguments:
 	mat: A matrix, [i, j] is the distance from vertex i to vertex j
 """
 class Graph_global:
-	def __init__(self, num_vertices, mat):
+	def __init__(self, num_vertices, mat, compare_mat):
 		self.V = num_vertices # number of vertices
 		self.graph = []
 		self.mat = mat
+		self.compare_mat = compare_mat
 		self.__create_graph()
 	
 
@@ -27,8 +28,8 @@ class Graph_global:
 				# avoid adding loop (edge from one vertex to itself)
 				if(i != j):
 					# avoid adding edge not existing
-					if(~np.isnan(mat[i, j])):
-						self.__addEdge(i, j, mat[i, j])
+					if(~np.isnan(self.mat[i, j])):
+						self.__addEdge(i, j, self.mat[i, j])
 
 	"""
 	function to display the path and distance from a starting station to a destination station
@@ -42,7 +43,7 @@ class Graph_global:
 	def show_path_dist(self, starting, ending):
 		dist, parent = self.BellmanFord(starting)
 		if(dist[ending] == float("Inf")):
-			return [], float("Inf")
+			return [], float("Inf"), float("Inf")
 		else:
 			path = []
 			path.append(ending)
@@ -51,7 +52,16 @@ class Graph_global:
 				path.append(parent[current])
 				current = parent[current]
 			path.reverse()
-			return path, dist[ending]
+			
+			# calculate another one (time / distance)
+			compare_dist = 0
+			for i in range(len(path) - 1):
+				if(np.isnan(self.compare_mat[path[i], path[i+1]])):
+					compare_dist = float("Inf")
+					break
+				compare_dist += self.compare_mat[path[i], path[i+1]]
+
+			return path, dist[ending], compare_dist
 			# if(path[-1] == starting):
 			# 	path.reverse()
 			# 	return path
@@ -84,6 +94,6 @@ if __name__ == "__main__":
 	print(mat)
 	print("shortest distance from 0")
 	print(dist)
-	s_p, d = g.show_path_dist(0, 3)
+	s_p, d, comp_d = g.show_path_dist(0, 3)
 	print("shortest path and distance from 0 to 3")
-	print(s_p, d)
+	print(s_p, d, comp_d)

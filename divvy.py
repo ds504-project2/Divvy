@@ -42,7 +42,7 @@ class Graph_Divvy:
 		time_list = []
 		next_v = src
 		while(next_v != end):
-			next_v, next_dist, next_time = self.next_vertex(next_v, end, time_span=30)
+			next_v, next_dist, next_time = self.next_vertex(next_v, end, time_span=time_span)
 			# print(next_v)
 
 			# try to avoid going back and force or going in a circle
@@ -74,7 +74,7 @@ class Graph_Divvy:
 		# assume that time is represented by minutes
 
 		# first check if the end vertex can be reached in 30 minutes from start
-		if(current_time_vec[end] <= 30):
+		if(current_time_vec[end] <= time_span):
 			# return start, end
 			return end, self.mat_dist[start, end], self.mat_time[start, end]
 
