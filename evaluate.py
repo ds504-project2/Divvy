@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import os
+import random
 
 from global_optimal import Graph_global
 from divvy import Graph_Divvy
@@ -26,27 +27,41 @@ def evaluate(time_matrix, dist_matrix):
 	pair_ls = all_pairs(num_vert)
 	num_pair = len(pair_ls)
 
+	# computing time is too long for the whole pairs.
+	# sample 1000 pairs to evaluate
+	random.seed(3)
+	pair_ls = [pair_ls[k] for k in random.sample(range(num_pair), 5)]
+	# num_pair = len(pair_ls)
+
 	# create 3 graphs
+	print("creating global graph")
 	global_graph_dist = Graph_global(num_vert, dist_matrix, time_matrix)
 	global_graph_time = Graph_global(num_vert, time_matrix, dist_matrix)
+	print('creating GJLS graph')
 	divvy_graph = Graph_Divvy(num_vert, dist_matrix, time_matrix)
+	print("graphs created")
 
 	# gd: global distance, gt: global time
-	dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff = 0 
+	dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff = 0, 0, 0, 0
 
 	# for debug
 	counter = 0
+	non_pair_counter = 0
 	for pair in pair_ls:
-		# for debug
-		counter += 1
-		print(counter)
-		
+		# # for debug
+		# counter += 1
+		# print(counter)
+
 		# GJLS
 		_, dv_dist, dv_time = divvy_graph.Divvy_GJLS(pair[0], pair[1])
 		# Global Dist, g_d_d is the shortest distance, g_d_t is the time according to shortest distance
 		_, g_d_d, g_d_t = global_graph_dist.show_path_dist(pair[0], pair[1])
 		# Global Time, 
 		_, g_t_t, g_t_d = global_graph_time.show_path_dist(pair[0], pair[1])
+
+		if(g_d_d == float("inf") or g_d_t == float("inf") or g_t_t == float("inf") or g_t_d == float("inf")):
+			non_pair_counter += 1
+			continue
 
 		# Compare GJLS with global dist
 		dv_gd_dist_diff += (sum(dv_dist) - g_d_d)
@@ -55,8 +70,11 @@ def evaluate(time_matrix, dist_matrix):
 		dv_gt_dist_diff += (sum(dv_dist) - g_t_d)
 		dv_gt_time_diff += (sum(dv_time) - g_t_t)
 
+		counter += 1
+		print(counter)
+
 	# Avg
-	dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff = dv_gd_time_diff/num_pair, dv_gd_dist_diff/num_pair, dv_gt_time_diff/num_pair, dv_gt_dist_diff/num_pair
+	dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff = dv_gd_time_diff/counter, dv_gd_dist_diff/counter, dv_gt_time_diff/counter, dv_gt_dist_diff/counter
 
 	return dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff
 
