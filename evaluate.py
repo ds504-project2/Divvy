@@ -90,16 +90,16 @@ def evaluate(time_matrix, dist_matrix):
 
 
 if __name__ == "__main__":
-	pairs = all_pairs_longer()
-	# gd_time, gd_dist, gt_time, gt_dist = evaluate(TIME_MATRIX, DIST_MATRIX)
-	# print("\nCompare with global distance")
-	# print("Avg distance difference")
-	# print(gd_dist)
-	# print("Avg time difference")
-	# print(gd_time)
-	# print("\nCompare with global time")
-	# print("Avg distance difference")
-	# print(gt_dist)
-	# print("Avg time difference")
-	# print(gt_time)
+	# pairs = all_pairs_longer()
+	gd_time, gd_dist, gt_time, gt_dist = evaluate(TIME_MATRIX, DIST_MATRIX)
+	print("\nCompare with global distance")
+	print("Avg distance difference")
+	print(gd_dist)
+	print("Avg time difference")
+	print(gd_time)
+	print("\nCompare with global time")
+	print("Avg distance difference")
+	print(gt_dist)
+	print("Avg time difference")
+	print(gt_time)
 
