@@ -10,37 +10,35 @@ from pipline import load_data
 from itertools import permutations
 
 # evaluation method:
-# 1. calculate all the pairs of 2 stations (with order) that the travel time is longer than 30 mins
+# 1. calculate all the pairs of 2 stations (with order)
 # 2. for each pair, calculate the related data according to divvy shortest path method
 # 3. for each pair, calculate the shortest distance and corresponding time according to global method
 # 4. for each pair, calculate the shortest time and corresponding distance according to global method
 # 5. calculate the avg difference between GJLS and global method (both time and distacne)
 
 TIME_MATRIX, DIST_MATRIX = load_data()
+print(TIME_MATRIX.shape)
+print(DIST_MATRIX.shape)
 
-def all_pairs_longer():
-	# ls = list(range(num_vert))
-	# return list(permutations(ls, 2))
-	longer_pair_ls = []
-	for i in range(TIME_MATRIX.shape[0]):
-		for j in range(TIME_MATRIX.shape[1]):
-			if(TIME_MATRIX[i, j]>1800):
-				longer_pair_ls.append((i, j))
-	print("# of pairs that longer than 30 mins: ", len(longer_pair_ls))
-	return longer_pair_ls
-
+def all_pairs(num_vert):
+	ls = list(range(num_vert))
+	return list(permutations(ls, 2))
 
 def evaluate(time_matrix, dist_matrix):
 	num_vert = dist_matrix.shape[0]
-	pair_ls = all_pairs_longer()
+	# pair_ls = all_pairs(num_vert)
+	# num_pair = len(pair_ls)
+
+	pair_ls = all_pairs(300)
 	num_pair = len(pair_ls)
 
-	# # computing time is too long for the whole pairs.
-	# # sample 1000 pairs to evaluate
-	# random.seed(3)
-	# pair_ls = [pair_ls[k] for k in random.sample(range(num_pair), 5)]
+	# computing time is too long for the whole pairs.
+	# sample 20 pairs to evaluate
+	random.seed(3)
+	pair_ls = [pair_ls[k] for k in random.sample(range(num_pair), 300)]
 	# # num_pair = len(pair_ls)
 	# print(pair_ls)
+
 
 	# create 3 graphs
 	print("creating global graph")
@@ -64,9 +62,9 @@ def evaluate(time_matrix, dist_matrix):
 		# GJLS
 		_, dv_dist, dv_time = divvy_graph.Divvy_GJLS(pair[0], pair[1])
 		# Global Dist, g_d_d is the shortest distance, g_d_t is the time according to shortest distance
-		_, g_d_d, g_d_t = global_graph_dist.show_path_dist(pair[0], pair[1], "dist")
+		_, g_d_d, g_d_t = global_graph_dist.show_path_dist_manually(pair[0], pair[1])
 		# Global Time, 
-		_, g_t_t, g_t_d = global_graph_time.show_path_dist(pair[0], pair[1], "time")
+		_, g_t_t, g_t_d = global_graph_time.show_path_dist_manually(pair[0], pair[1])
 
 		if(g_d_d == float("inf") or g_d_t == float("inf") or g_t_t == float("inf") or g_t_d == float("inf")):
 			non_pair_counter += 1
@@ -80,8 +78,7 @@ def evaluate(time_matrix, dist_matrix):
 		dv_gt_time_diff += (sum(dv_time) - g_t_t)
 
 		counter += 1
-	print("# of pairs used for evaluation:, ", counter)
-	print("# of pairs not used for evaluation: ", non_pair_counter)
+		print(counter)
 
 	# Avg
 	dv_gd_time_diff, dv_gd_dist_diff, dv_gt_time_diff, dv_gt_dist_diff = dv_gd_time_diff/counter, dv_gd_dist_diff/counter, dv_gt_time_diff/counter, dv_gt_dist_diff/counter
@@ -103,4 +100,3 @@ if __name__ == "__main__":
 	print(gt_dist)
 	print("Avg time difference")
 	print(gt_time)
-

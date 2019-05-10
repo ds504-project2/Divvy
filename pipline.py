@@ -5,6 +5,13 @@ import os
 from global_optimal import Graph_global
 from divvy import Graph_Divvy
 
+
+def check():
+	time_matrix, dist_matrix = load_data()
+	print(time_matrix.shape)
+	print(dist_matrix.shape)
+	assert time_matrix.shape == dist_matrix.shape
+
 def load_data():
 	root_path = os.getcwd()
 	time_path = os.path.join(root_path, "Preprocessing_by_Sam/time_matrix.csv")
@@ -26,9 +33,9 @@ def optimize(time_matrix, dist_matrix, starting, ending):
 	print("creating divvy graph")
 	
 	print("calculating global SP of distance")
-	g_path_dist, g_dist_dist, g_compare_time_dist = global_graph_dist.show_path_dist(starting, ending)
+	g_path_dist, g_dist_dist, g_compare_time_dist = global_graph_dist.show_path_dist_manually(starting, ending)
 	print("calculating global SP of time")
-	g_path_time, g_dist_time, g_compare_dist_time = global_graph_time.show_path_dist(starting, ending)
+	g_path_time, g_dist_time, g_compare_dist_time = global_graph_time.show_path_dist_manually(starting, ending)
 	print("calculating divvy SP")
 	dv_path, dv_dist, dv_time = divvy_graph.Divvy_GJLS(starting, ending, time_span=1800)
 	print("From %d to %d" % (starting, ending))
@@ -48,4 +55,5 @@ if __name__ == "__main__":
 	tm, dm = load_data()
 	# print(tm)
 	# try from 0 to 5
-	optimize(tm, dm, 0, 5)
+	optimize(tm, dm, 205, 327)
+	# check()

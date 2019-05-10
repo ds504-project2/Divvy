@@ -36,7 +36,7 @@ class Graph_Divvy:
 
 	# main function that finds the shortest path from src to end
 	# return path, distance list and time list
-	def Divvy_GJLS(self, src, end, time_span=30):
+	def Divvy_GJLS(self, src, end, time_span=1800):
 		path_list = [src]
 		dist_list = []
 		time_list = []
@@ -64,7 +64,7 @@ class Graph_Divvy:
 		return path_list, dist_list, time_list
 
 
-	def next_vertex(self, start, end, time_span=30):
+	def next_vertex(self, start, end, time_span=1800):
 		in_30_list = []
 		# distance from every vertex to the end vertex
 		current_dist_vec = self.mat_dist[:, end]
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 	t_m = np.random.normal(35, 10, size=(6, 6))
 	g = Graph_Divvy(6, d_m, t_m)
 	# next_v, d, t = g.next_vertex(0, 3)
-	path_l, dist_l, time_l = g.Divvy_GJLS(0, 3, time_span=30)
+	path_l, dist_l, time_l = g.Divvy_GJLS(0, 3, time_span=1800)
 
 	print("\ndistance mat")
 	print(d_m)
