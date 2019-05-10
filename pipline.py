@@ -14,8 +14,8 @@ def check():
 
 def load_data():
 	root_path = os.getcwd()
-	time_path = os.path.join(root_path, "Preprocessing_by_Sam/time_matrix.csv")
-	dist_path = os.path.join(root_path, "Preprocessing_by_Sam/distance_matrix.csv")
+	time_path = os.path.join(root_path, "time_matrix.csv")
+	dist_path = os.path.join(root_path, "distance_matrix.csv")
 
 	# load two matrices (time and distance)
 	time_matrix = np.genfromtxt(time_path, delimiter=",")
