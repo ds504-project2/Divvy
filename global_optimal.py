@@ -72,7 +72,7 @@ class Graph_global:
 			with open(dist_path, "rb") as f1:
 				dist_ls = pickle.load(f1)
 			with open(parent_path, "rb") as f2:
-				parent_path = pickle.load(f2)
+				parent_ls = pickle.load(f2)
 		dist = dist_ls[starting]
 		parent = parent_ls[starting]
 
