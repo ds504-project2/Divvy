@@ -1,6 +1,6 @@
 # Divvy Bike Project
 
-## 1 Globally shortest path (for evaluation of our method)
+## 1 Globally shortest path (for evaluation of our method) (GSP)
 Use Bellman-Ford shortest path algorithm
 #### Input: 
 ##### For distance based shortest path:
@@ -11,7 +11,7 @@ Use Bellman-Ford shortest path algorithm
 *shortest path and the shortest distance (or time)*
 
 
-## 2 Locally shortest path
+## 2 Locally shortest path (LSP)
 #### Input: 
 *distance matrix, time matrix, starting station s, destination station d*
 #### Output: 
@@ -24,5 +24,11 @@ Use Bellman-Ford shortest path algorithm
 - 3). Set s = m, and repeat 1) to 2) until s == d, which means the next station (s) is the destination station (d)
 
 
-## 3 Evaluation of Our Algorithm (Compare with globally shortest path algorithm)
-Use the pairs of stations which are far away than 30 mins.
+## 3 Evaluation of Our Algorithm (Compare with GSP algorithm)
+There are 41609 pairs of stations which are far away more than 30 minutes.
+#### Comparasion with distance based GSP
+- 1). Average travelling distance: LSP - GSP = 0.48566 kilometers.
+- 2). Average travelling time: LSP - GSP = -3.35 minutes.
+#### Comparasion with time based GSP
+- 1). Average travelling distance: LSP - GSP = -2.88435 kilometers.
+- 2). Average travelling time: LSP - GSP = 11.59 minutes.
